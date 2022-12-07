@@ -2,9 +2,13 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      docker: 18
+      docker: latest
   pre_build:
     commands:
+      - sudo groupadd docker
+      - sudo usermod -aG docker $USER
+      - docker run hello-world
+      - sudo service docker restart
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
   build:
@@ -16,7 +20,6 @@ phases:
       #- docker run -e CI=true $IMAGE_REPO_NAME:$TEST_IMAGE_TAG npm run test
       - echo Build started on `date`
       - echo Building the Docker image....
-      - sudo service docker restart
       - sudo docker-compose --file=docker-compose-prod.yml build
   post_build:
     commands:
