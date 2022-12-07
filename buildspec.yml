@@ -5,7 +5,6 @@ phases:
       docker: latest
   pre_build:
     commands:
-      - sudo systemctl start docker
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
   build:
@@ -17,12 +16,12 @@ phases:
       #- docker run -e CI=true $IMAGE_REPO_NAME:$TEST_IMAGE_TAG npm run test
       - echo Build started on `date`
       - echo Building the Docker image....
-      - sudo docker-compose --file=docker-compose-prod.yml build
+      - sudo docker-compose up
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image....
-      - sudo docker-compose --file=docker-compose-prod.yml push
+      - sudo docker-compose push
 artifacts:
   files:
     - 'Dockerrun.aws.json'
