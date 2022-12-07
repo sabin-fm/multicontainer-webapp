@@ -5,8 +5,7 @@ phases:
       docker: latest
   pre_build:
     commands:
-      - sudo groupadd docker
-      - sudo usermod -aG docker $USER
+      
       - docker run hello-world
       - sudo service docker restart
       - echo Logging in to Amazon ECR...
