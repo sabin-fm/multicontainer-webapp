@@ -16,6 +16,7 @@ phases:
       #- docker run -e CI=true $IMAGE_REPO_NAME:$TEST_IMAGE_TAG npm run test
       - echo Build started on `date`
       - echo Building the Docker image...
+      - sudo service docker restart
       - sudo docker-compose --file=docker-compose-prod.yml build
   post_build:
     commands:
