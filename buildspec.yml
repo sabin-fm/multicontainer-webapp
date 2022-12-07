@@ -5,9 +5,7 @@ phases:
       docker: latest
   pre_build:
     commands:
-      
-      - docker run hello-world
-      - sudo service docker restart
+      - sudo systemctl start docker
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
   build:
